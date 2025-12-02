@@ -79,6 +79,23 @@ const userLogin = async (req, res) => {
 };
 
 
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find();  // fetch all users
+
+        res.status(200).json({
+            message: "All users fetched successfully",
+            data: users
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+
+
 const updateUser = async (req, res) => {
     try {
         const userId = req.user.userId; // from auth middleware
@@ -132,7 +149,7 @@ const deleteUser = async (req, res) => {
     }
 };
 
-module.exports = { userRegister, userLogin, updateUser, deleteUser };
+module.exports = { userRegister, userLogin, updateUser, deleteUser, getAllUsers };
 
 
 
