@@ -6,6 +6,13 @@ const reportRoutes = require('./routs/reportRouts')
 const bodyParser = require('body-parser');
 const postRoutes = require("./routs/postRoutes");
 
+const adminRoutes = require('./routs/adminRoutes');
+
+
+
+
+const createDefaultAdmin = require("./utils/createDefaultAdmin");
+
 const app = express()
 
 
@@ -15,8 +22,10 @@ dotEnv.config()
 
 
 mongoose.connect(process.env.MONGO_URI)
-.then(()=>{
+.then(async ()=>{
     console.log("MongoDB connnected successfully")
+
+    await createDefaultAdmin();
 })
 .catch((error)=>{console.log(error)})
 
@@ -25,6 +34,10 @@ app.use(bodyParser.json());
 app.use('/user',userRouts)
 app.use('/userReport',reportRoutes)
 app.use("/posts", postRoutes);
+
+app.use("/admin", adminRoutes);
+
+
  
 
 app.listen(PORT, ()=>{
